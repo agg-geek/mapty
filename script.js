@@ -65,6 +65,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 class App {
 	#map;
 	#mapClickEvent;
+	#workouts = [];
 
 	constructor() {
 		this._getPosition();
@@ -136,7 +137,6 @@ class App {
 			}
 
 			workout = new Running([clickLat, clickLng], distance, duration, cadence);
-			console.log(workout);
 		}
 
 		if (workoutType === 'cycling') {
@@ -148,8 +148,11 @@ class App {
 			}
 
 			workout = new Cycling([clickLat, clickLng], distance, duration, elevationGain);
-			console.log(workout);
 		}
+
+		this.#workouts.push(workout);
+		console.log(workout);
+		console.log(this.#workouts);
 
 		const popupOptions = {
 			maxWidth: 150,
