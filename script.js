@@ -159,7 +159,7 @@ class App {
 			minWidth: 75,
 			autoClose: false,
 			closeOnClick: false,
-			className: 'running-popup',
+			className: `${inputType.value}-popup`,
 		};
 
 		L.marker([clickLat, clickLng])
