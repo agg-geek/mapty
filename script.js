@@ -29,6 +29,7 @@ class App {
 
 	constructor() {
 		this._getPosition();
+		inputType.addEventListener('change', this._toggleWorkoutType);
 	}
 
 	_getPosition() {
@@ -66,7 +67,10 @@ class App {
 		inputDistance.focus();
 	}
 
-	_toggleWorkoutType() {}
+	_toggleWorkoutType() {
+		inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+		inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+	}
 
 	_newWorkout() {}
 }
