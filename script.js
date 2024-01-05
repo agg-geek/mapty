@@ -66,15 +66,15 @@ const inputElevation = document.querySelector('.form__input--elevation');
 
 class App {
 	#map;
+	#mapZoomLevel = 13;
 	#mapClickEvent;
 	#workouts = [];
 
 	constructor() {
 		this._getPosition();
 		inputType.addEventListener('change', this._toggleWorkoutType);
-		// newWorkout called as a callback by addEventListener will have
-		// this set to form element
 		form.addEventListener('submit', this._newWorkout.bind(this));
+		containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
 	}
 
 	_getPosition() {
@@ -97,7 +97,7 @@ class App {
 		const { latitude, longitude } = position.coords;
 		const coords = [latitude, longitude];
 
-		this.#map = L.map('map').setView(coords, 13);
+		this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
 
 		L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 			attribution: '&copy; OpenStreetMap',
@@ -159,8 +159,6 @@ class App {
 		}
 
 		this.#workouts.push(workout);
-		console.log(workout);
-		console.log(this.#workouts);
 
 		this._renderWorkout(workout);
 		this._renderWorkoutMarker(workout); // notice no requirement of call or bind
@@ -212,6 +210,21 @@ class App {
         </li>`;
 
 		form.insertAdjacentHTML('afterend', html);
+	}
+
+	// click on a workout in sidebar and move to it's location in the map
+	// use Event delegation
+	_moveToPopup(evt) {
+		const workoutElem = evt.target.closest('.workout');
+		if (!workoutElem) return;
+
+		const workout = this.#workouts.find(workout => workout.id === workoutElem.dataset.id);
+		// console.log(workout);
+
+		this.#map.setView(workout.coords, this.#mapZoomLevel, {
+			animate: true,
+			pan: { duration: 1 },
+		});
 	}
 }
 
