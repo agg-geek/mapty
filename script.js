@@ -242,6 +242,8 @@ class App {
 
 		this.#workouts = workouts;
 		this.#workouts.forEach(workout => this._renderWorkout(workout));
+
+		this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
 }
 
