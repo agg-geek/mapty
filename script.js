@@ -108,8 +108,7 @@ class App {
 
 		this.#map.on('click', this._showForm.bind(this));
 
-		// show markers for workouts loaded from local storage
-		// this is shown solution, but does not work (just async things)
+		// you might need this to avoid bugs, see commit 'Add note for potential bug'
 		// this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
 
@@ -244,14 +243,15 @@ class App {
 		const workouts = JSON.parse(localStorage.getItem('workouts'));
 		if (!workouts) return;
 
+		// workouts from local storage have lost the correct prototype chain
+		// log workouts and check
+		// this might cause problems if you use the chain to call methods up in the chain
+		// (a problem was demonstrated using a click fn, check video)
 		this.#workouts = workouts;
+
 		this.#workouts.forEach(workout => this._renderWorkout(workout));
 
-		// renderWorkoutMarker requires L and #map to be loaded and set
-		// which is done by _loadMap which is called by _getPosition which is called by constructor
-		// since L or map has not been loaded and you just try to render marker, an error is thrown
-		// hence render markers in _loadMap function
-		// markers are not shown if code is run there, but they're shown here (just async things)
+		// this might cause potential bug, see commit 'Add note for potential bug'
 		this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
 }
