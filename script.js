@@ -27,6 +27,7 @@ class Workout {
 }
 
 class Running extends Workout {
+	workoutType = 'running';
 	constructor(coords, distance, duration, cadence) {
 		super(coords, distance, duration);
 		this.cadence = cadence;
@@ -40,6 +41,7 @@ class Running extends Workout {
 }
 
 class Cycling extends Workout {
+	workoutType = 'cycling';
 	constructor(coords, distance, duration, elevationGain) {
 		super(coords, distance, duration);
 		this.elevationGain = elevationGain;
@@ -163,7 +165,7 @@ class App {
 			minWidth: 75,
 			autoClose: false,
 			closeOnClick: false,
-			// className: `${inputType}-popup`, // FIX
+			className: `${workout.workoutType}-popup`,
 		};
 
 		L.marker(workout.coords) // workout.coords is [lat, lng] as reqd by leaflet
