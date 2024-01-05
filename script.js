@@ -58,9 +58,22 @@ map.on('click', function (mapEvent) {
 	// getting the latitude and longitude of click
 	const { lat: clickLat, lng: clickLng } = mapEvent.latlng;
 	// console.log(clickLat, clickLng);
-	// const clickCoords = [clickLat, clickLng];
 
 	// create marker and popup on the clicked location
 	// marker: the pin on map, popup: the msg box
-	L.marker([clickLat, clickLng]).addTo(map).bindPopup().setPopupContent('Workout').openPopup();
+	L.marker([clickLat, clickLng])
+		.addTo(map)
+		.bindPopup(
+			L.popup({
+				maxWidth: 150,
+				minWidth: 75,
+				closeButton: false,
+				autoClose: false,
+				closeOnClick: false,
+				closeOnEscapeKey: false,
+				className: 'running-popup',
+			})
+		)
+		.setPopupContent('Workout')
+		.openPopup();
 });
