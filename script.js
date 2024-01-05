@@ -107,6 +107,10 @@ class App {
 		}).addTo(this.#map); // notice this.#map
 
 		this.#map.on('click', this._showForm.bind(this));
+
+		// show markers for workouts loaded from local storage
+		// this is shown solution, but does not work (just async things)
+		// this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
 
 	_showForm(mapEvt) {
@@ -243,6 +247,11 @@ class App {
 		this.#workouts = workouts;
 		this.#workouts.forEach(workout => this._renderWorkout(workout));
 
+		// renderWorkoutMarker requires L and #map to be loaded and set
+		// which is done by _loadMap which is called by _getPosition which is called by constructor
+		// since L or map has not been loaded and you just try to render marker, an error is thrown
+		// hence render markers in _loadMap function
+		// markers are not shown if code is run there, but they're shown here (just async things)
 		this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
 }
