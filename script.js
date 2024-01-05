@@ -75,6 +75,9 @@ class App {
 		inputType.addEventListener('change', this._toggleWorkoutType);
 		form.addEventListener('submit', this._newWorkout.bind(this));
 		containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+
+		// call this in the constructor so that previous workouts are immediately loaded
+		this._getWorkouts();
 	}
 
 	_getPosition() {
@@ -165,7 +168,7 @@ class App {
 
 		this._hideForm();
 
-		this._storeWorkout();
+		this._storeWorkouts();
 	}
 
 	_renderWorkoutMarker(workout) {
@@ -229,8 +232,16 @@ class App {
 		});
 	}
 
-	_storeWorkout() {
-		localStorage.setItem('workout', JSON.stringify(this.#workouts));
+	_storeWorkouts() {
+		localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+	}
+
+	_getWorkouts() {
+		const workouts = JSON.parse(localStorage.getItem('workouts'));
+		if (!workouts) return;
+
+		this.#workouts = workouts;
+		this.#workouts.forEach(workout => this._renderWorkout(workout));
 	}
 }
 
