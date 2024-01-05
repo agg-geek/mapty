@@ -25,6 +25,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 
 class App {
 	#map;
+	#mapClickEvent;
 
 	constructor() {
 		this._getPosition();
@@ -55,9 +56,15 @@ class App {
 		L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 			attribution: '&copy; OpenStreetMap',
 		}).addTo(this.#map); // notice this.#map
+
+		this.#map.on('click', this._showForm.bind(this));
 	}
 
-	_showForm() {}
+	_showForm(mapEvt) {
+		this.#mapClickEvent = mapEvt;
+		form.classList.remove('hidden');
+		inputDistance.focus();
+	}
 
 	_toggleWorkoutType() {}
 
