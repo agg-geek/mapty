@@ -46,7 +46,7 @@ const [latitude, longitude] = coords;
 // 'map' is the class of the div in HTML where the map will be rendered
 const map = L.map('map').setView(coords, 13); // 13 is the zoom level
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 

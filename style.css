@@ -42,7 +42,7 @@ a:visited {
 
 /* SIDEBAR */
 .sidebar {
-	flex-basis: 50rem;
+	flex-basis: 40rem;
 	background-color: var(--color-dark--1);
 	padding: 3rem 5rem 4rem 5rem;
 	display: flex;
