@@ -119,6 +119,15 @@ class App {
 
 		const { lat: clickLat, lng: clickLng } = this.#mapClickEvent.latlng;
 
+		const workoutType = inputType.value;
+		const distance = inputDistance.value;
+		const duration = inputDuration.value;
+
+		if (workoutType === 'runnning') {
+			const cadence = inputCadence.value;
+			console.log(workoutType, distance, duration, cadence);
+		}
+
 		const popupOptions = {
 			maxWidth: 150,
 			minWidth: 75,
