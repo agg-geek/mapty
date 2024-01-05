@@ -164,6 +164,8 @@ class App {
 		this._renderWorkoutMarker(workout); // notice no requirement of call or bind
 
 		this._hideForm();
+
+		this._storeWorkout();
 	}
 
 	_renderWorkoutMarker(workout) {
@@ -225,6 +227,10 @@ class App {
 			animate: true,
 			pan: { duration: 1 },
 		});
+	}
+
+	_storeWorkout() {
+		localStorage.setItem('workout', JSON.stringify(this.#workouts));
 	}
 }
 
