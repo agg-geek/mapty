@@ -154,15 +154,19 @@ class App {
 		console.log(workout);
 		console.log(this.#workouts);
 
+		this._renderWorkoutMarker(workout); // notice no requirement of call or bind
+	}
+
+	_renderWorkoutMarker(workout) {
 		const popupOptions = {
 			maxWidth: 150,
 			minWidth: 75,
 			autoClose: false,
 			closeOnClick: false,
-			className: `${inputType.value}-popup`,
+			// className: `${inputType}-popup`, // FIX
 		};
 
-		L.marker([clickLat, clickLng])
+		L.marker(workout.coords) // workout.coords is [lat, lng] as reqd by leaflet
 			.addTo(this.#map)
 			.bindPopup(L.popup(popupOptions))
 			.setPopupContent('Workout')
