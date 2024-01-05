@@ -23,6 +23,25 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
+class App {
+	constructor() {}
+
+	_getPosition() {}
+
+	_loadMap() {}
+
+	_showForm() {}
+
+	_toggleWorkoutType() {}
+
+	_newWorkout() {}
+}
+
+const app = new App();
+
+// =====================================================================
+// OLD CODE
+
 // this does not work through a proxy
 // navigator.geolocation.getCurrentPosition(
 // 	// success callback
