@@ -254,6 +254,12 @@ class App {
 		// this might cause potential bug, see commit 'Add note for potential bug'
 		this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
+
+	reset() {
+		// can be called in script or (better) console
+		localStorage.removeItem('workouts');
+		location.reload(); // reload page
+	}
 }
 
 const app = new App();
