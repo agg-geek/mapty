@@ -33,7 +33,7 @@ class Running extends Workout {
 	}
 
 	calcPace() {
-		this.pace = this.duration / this.distance; // mins/km
+		this.pace = Math.round(this.duration / this.distance); // mins/km
 		return this.pace;
 	}
 }
@@ -49,7 +49,7 @@ class Cycling extends Workout {
 	}
 
 	calcSpeed() {
-		this.speed = this.distance / (this.duration / 60); // km/hr
+		this.speed = Math.round(this.distance / (this.duration / 60)); // km/hr
 		return this.speed;
 	}
 }
