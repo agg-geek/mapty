@@ -180,7 +180,7 @@ class App {
 		L.marker(workout.coords) // workout.coords is [lat, lng] as reqd by leaflet
 			.addTo(this.#map)
 			.bindPopup(L.popup(popupOptions))
-			.setPopupContent('Workout')
+			.setPopupContent(`${workout.workoutType === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`)
 			.openPopup();
 	}
 
