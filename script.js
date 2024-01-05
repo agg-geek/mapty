@@ -122,6 +122,8 @@ class App {
 
 		const { lat: clickLat, lng: clickLng } = this.#mapClickEvent.latlng;
 
+		let workout;
+
 		const workoutType = inputType.value;
 		const distance = Number(inputDistance.value);
 		const duration = Number(inputDuration.value);
@@ -132,6 +134,21 @@ class App {
 			if (!isNumber(distance, duration, cadence) || !isPositive(distance, duration, cadence)) {
 				return alert('Input data is not valid. Enter positive numerical values.');
 			}
+
+			workout = new Running([clickLat, clickLng], distance, duration, cadence);
+			console.log(workout);
+		}
+
+		if (workoutType === 'cycling') {
+			const elevationGain = Number(inputElevation.value);
+
+			// elevationGain can be -ve as well
+			if (!isNumber(distance, duration, elevationGain) || !isPositive(distance, duration)) {
+				return alert('Input data is not valid. Enter positive numerical values.');
+			}
+
+			workout = new Cycling([clickLat, clickLng], distance, duration, elevationGain);
+			console.log(workout);
 		}
 
 		const popupOptions = {
