@@ -112,6 +112,12 @@ class App {
 		inputDistance.focus();
 	}
 
+	_hideForm() {
+		inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = '';
+
+		form.classList.add('hidden');
+	}
+
 	_toggleWorkoutType() {
 		inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
 		inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
@@ -158,6 +164,8 @@ class App {
 
 		this._renderWorkout(workout);
 		this._renderWorkoutMarker(workout); // notice no requirement of call or bind
+
+		this._hideForm();
 	}
 
 	_renderWorkoutMarker(workout) {
