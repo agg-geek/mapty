@@ -1,20 +1,5 @@
 'use strict';
 
-const months = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December',
-];
-
 class Workout {
 	date = new Date(); // to show date on the workout popup
 	id = String(Date.now()).slice(-10); // use the last 10 digits of Date.now() as ID
@@ -24,6 +9,17 @@ class Workout {
 		this.distance = distance; // km
 		this.duration = duration; // mins
 	}
+
+	_setDescription() {
+		const convertTitleCase = str => `${str[0].toUpperCase()}${str.slice(1)}`;
+
+		// prettier-ignore
+		const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+		this.description = `${convertTitleCase(this.workoutType)} on ${
+			months[this.date.getMonth()]
+		} ${this.date.getDate()}`;
+	}
 }
 
 class Running extends Workout {
@@ -32,6 +28,8 @@ class Running extends Workout {
 		super(coords, distance, duration);
 		this.cadence = cadence;
 		this.calcPace();
+		// call here as this.workoutType exists only here and not in Workout class
+		this._setDescription();
 	}
 
 	calcPace() {
@@ -46,6 +44,8 @@ class Cycling extends Workout {
 		super(coords, distance, duration);
 		this.elevationGain = elevationGain;
 		this.calcSpeed();
+		// call here as this.workoutType exists only here and not in Workout class
+		this._setDescription();
 	}
 
 	calcSpeed() {
@@ -180,7 +180,7 @@ class App {
 		// prettier-ignore
 		const html = 
         `<li class="workout workout--${workout.workoutType}" data-id="${workout.id}">
-            <h2 class="workout__title">Running on April 14</h2>
+            <h2 class="workout__title">${workout.description}</h2>
             <div class="workout__details">
                 <span class="workout__icon">${workout.workoutType === 'running' ? '🏃‍♂️' : '🚴‍♀️'}</span>
                 <span class="workout__value">${workout.distance}</span>
