@@ -117,15 +117,21 @@ class App {
 	_newWorkout(formEvt) {
 		formEvt.preventDefault();
 
+		const isNumber = (...input) => input.every(i => Number.isFinite(i));
+		const isPositive = (...input) => input.every(i => i > 0);
+
 		const { lat: clickLat, lng: clickLng } = this.#mapClickEvent.latlng;
 
 		const workoutType = inputType.value;
-		const distance = inputDistance.value;
-		const duration = inputDuration.value;
+		const distance = Number(inputDistance.value);
+		const duration = Number(inputDuration.value);
 
-		if (workoutType === 'runnning') {
-			const cadence = inputCadence.value;
-			console.log(workoutType, distance, duration, cadence);
+		if (workoutType === 'running') {
+			const cadence = Number(inputCadence.value);
+
+			if (!isNumber(distance, duration, cadence) || !isPositive(distance, duration, cadence)) {
+				return alert('Input data is not valid. Enter positive numerical values.');
+			}
 		}
 
 		const popupOptions = {
