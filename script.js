@@ -50,4 +50,17 @@ L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
-L.marker(coords).addTo(map).bindPopup('A pretty CSS popup.<br> Easily customizable.').openPopup();
+// click event on map, notice that we are using leaflet for this and
+// not addEventListener (because then we don't have any way of knowing the coords of click)
+map.on('click', function (mapEvent) {
+	// console.log(mapEvent);
+
+	// getting the latitude and longitude of click
+	const { lat: clickLat, lng: clickLng } = mapEvent.latlng;
+	// console.log(clickLat, clickLng);
+	// const clickCoords = [clickLat, clickLng];
+
+	// create marker and popup on the clicked location
+	// marker: the pin on map, popup: the msg box
+	L.marker([clickLat, clickLng]).addTo(map).bindPopup().setPopupContent('Workout').openPopup();
+});

@@ -196,6 +196,8 @@ a:visited {
 	background-color: var(--color-light--1);
 }
 
+/* Customize styles of the leaflet popup */
+
 /* Popup width is defined in JS using options */
 .leaflet-popup .leaflet-popup-content-wrapper {
 	background-color: var(--color-dark--1);
@@ -212,6 +214,8 @@ a:visited {
 	background-color: var(--color-dark--1);
 }
 
+/* Use these classes .running-popup and .cycling-popup
+ * for different workouts */
 .running-popup .leaflet-popup-content-wrapper {
 	border-left: 5px solid var(--color-brand--2);
 }
