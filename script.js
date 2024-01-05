@@ -15,6 +15,19 @@ const months = [
 	'December',
 ];
 
+class Workout {
+	date = new Date(); // to show date on the workout popup
+	id = String(Date.now()).slice(-10); // use the last 10 digits of Date.now() as ID
+
+	constructor(coords, distance, duration) {
+		this.coords = coords; // [lat, lng]
+		this.distance = distance; // km
+		this.duration = duration; // mins
+	}
+}
+
+// =====================================================================
+
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
 const inputType = document.querySelector('.form__input--type');
