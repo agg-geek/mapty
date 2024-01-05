@@ -30,6 +30,9 @@ class App {
 	constructor() {
 		this._getPosition();
 		inputType.addEventListener('change', this._toggleWorkoutType);
+		// newWorkout called as a callback by addEventListener will have
+		// this set to form element
+		form.addEventListener('submit', this._newWorkout.bind(this));
 	}
 
 	_getPosition() {
@@ -72,42 +75,25 @@ class App {
 		inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
 	}
 
-	_newWorkout() {}
+	_newWorkout(formEvt) {
+		formEvt.preventDefault();
+
+		const { lat: clickLat, lng: clickLng } = this.#mapClickEvent.latlng;
+
+		const popupOptions = {
+			maxWidth: 150,
+			minWidth: 75,
+			autoClose: false,
+			closeOnClick: false,
+			className: 'running-popup',
+		};
+
+		L.marker([clickLat, clickLng])
+			.addTo(this.#map)
+			.bindPopup(L.popup(popupOptions))
+			.setPopupContent('Workout')
+			.openPopup();
+	}
 }
 
 const app = new App();
-
-// =====================================================================
-// OLD CODE
-
-/*
-
-// click event on map, notice that we are using leaflet for this and
-// not addEventListener (because then we don't have any way of knowing the coords of click)
-map.on('click', function (mapEvent) {
-	// console.log(mapEvent);
-
-	// getting the latitude and longitude of click
-	const { lat: clickLat, lng: clickLng } = mapEvent.latlng;
-	// console.log(clickLat, clickLng);
-
-	// create marker and popup on the clicked location
-	// marker: the pin on map, popup: the msg box
-	L.marker([clickLat, clickLng])
-		.addTo(map)
-		.bindPopup(
-			L.popup({
-				maxWidth: 150,
-				minWidth: 75,
-				closeButton: false,
-				autoClose: false,
-				closeOnClick: false,
-				closeOnEscapeKey: false,
-				className: 'running-popup',
-			})
-		)
-		.setPopupContent('Workout')
-		.openPopup();
-});
-
-*/
