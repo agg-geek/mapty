@@ -24,9 +24,25 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
 class App {
-	constructor() {}
+	constructor() {
+		this._getPosition();
+	}
 
-	_getPosition() {}
+	_getPosition() {
+		// notice this._loadMap.bind(this)
+		// getCurrentPosition (gCP) will call the loadMap fn as a regular fn call
+		// not as a method call, so the regular fn call will have this set to undefined
+
+		// WRONG: // navigator.geolocation.getCurrentPosition(this._loadMap, function () {
+		// CORRECT:
+		// navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), function () {
+		// 	alert('Could not get your location coordinates!');
+		// 	throw new Error('App quit because location could not be found');
+		// });
+
+		const position = { coords: { latitude: 19.2793888, longitude: 72.860704 } };
+		this._loadMap(position);
+	}
 
 	_loadMap() {}
 
@@ -42,20 +58,7 @@ const app = new App();
 // =====================================================================
 // OLD CODE
 
-// this does not work through a proxy
-// navigator.geolocation.getCurrentPosition(
-// 	// success callback
-// 	function (position) {
-// 		// console.log(position);
-// 		const { latitude, longitude } = position.coords;
-// 		console.log(latitude, longitude);
-// 	},
-// 	// failure callback
-// 	function () {
-// 		alert('Could not get your location coordinates!');
-// 		throw new Error('App quit because location could not be found');
-// 	}
-// );
+/*
 
 // Directly proceeding with stuff here,
 // all of this should continue in the success callback above
@@ -96,3 +99,5 @@ map.on('click', function (mapEvent) {
 		.setPopupContent('Workout')
 		.openPopup();
 });
+
+*/
