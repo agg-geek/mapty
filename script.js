@@ -156,6 +156,7 @@ class App {
 		console.log(workout);
 		console.log(this.#workouts);
 
+		this._renderWorkout(workout);
 		this._renderWorkoutMarker(workout); // notice no requirement of call or bind
 	}
 
@@ -173,6 +174,36 @@ class App {
 			.bindPopup(L.popup(popupOptions))
 			.setPopupContent('Workout')
 			.openPopup();
+	}
+
+	_renderWorkout(workout) {
+		// prettier-ignore
+		const html = 
+        `<li class="workout workout--${workout.workoutType}" data-id="${workout.id}">
+            <h2 class="workout__title">Running on April 14</h2>
+            <div class="workout__details">
+                <span class="workout__icon">${workout.workoutType === 'running' ? '🏃‍♂️' : '🚴‍♀️'}</span>
+                <span class="workout__value">${workout.distance}</span>
+                <span class="workout__unit">kms</span>
+            </div>
+            <div class="workout__details">
+                <span class="workout__icon">⏱</span>
+                <span class="workout__value">${workout.duration}</span>
+                <span class="workout__unit">mins</span>
+            </div>
+            <div class="workout__details">
+                <span class="workout__icon">⚡️</span>
+                <span class="workout__value">${workout.workoutType === 'running' ? workout.pace : workout.speed}</span>
+                <span class="workout__unit">${workout.workoutType === 'running' ? 'mins/km' : 'km/hr'}</span>
+            </div>
+            <div class="workout__details">
+                <span class="workout__icon">${workout.workoutType === 'running' ? '🦶🏼' : '⛰'}</span>
+                <span class="workout__value">${workout.workoutType === 'running' ? workout.cadence : workout.elevationGain}</span>
+                <span class="workout__unit">${workout.workoutType === 'running' ? 'spm' : 'm'}</span>
+            </div>
+        </li>`;
+
+		form.insertAdjacentHTML('afterend', html);
 	}
 }
 
