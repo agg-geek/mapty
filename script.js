@@ -1,13 +1,13 @@
 'use strict';
 
 class Workout {
-	date = new Date(); // to show date on the workout popup
-	id = String(Date.now()).slice(-10); // use the last 10 digits of Date.now() as ID
+	date = new Date();
+	id = String(Date.now()).slice(-10);
 
 	constructor(coords, distance, duration) {
-		this.coords = coords; // [lat, lng]
-		this.distance = distance; // km
-		this.duration = duration; // mins
+		this.coords = coords;
+		this.distance = distance;
+		this.duration = duration;
 	}
 
 	_setDescription() {
@@ -28,12 +28,11 @@ class Running extends Workout {
 		super(coords, distance, duration);
 		this.cadence = cadence;
 		this.calcPace();
-		// call here as this.workoutType exists only here and not in Workout class
 		this._setDescription();
 	}
 
 	calcPace() {
-		this.pace = Math.round(this.duration / this.distance); // mins/km
+		this.pace = Math.round(this.duration / this.distance);
 		return this.pace;
 	}
 }
@@ -44,17 +43,14 @@ class Cycling extends Workout {
 		super(coords, distance, duration);
 		this.elevationGain = elevationGain;
 		this.calcSpeed();
-		// call here as this.workoutType exists only here and not in Workout class
 		this._setDescription();
 	}
 
 	calcSpeed() {
-		this.speed = Math.round(this.distance / (this.duration / 60)); // km/hr
+		this.speed = Math.round(this.distance / (this.duration / 60));
 		return this.speed;
 	}
 }
-
-// =====================================================================
 
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
@@ -75,23 +71,10 @@ class App {
 		inputType.addEventListener('change', this._toggleWorkoutType);
 		form.addEventListener('submit', this._newWorkout.bind(this));
 		containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
-
-		// call this in the constructor so that previous workouts are immediately loaded
 		this._getWorkouts();
 	}
 
 	_getPosition() {
-		// notice this._loadMap.bind(this)
-		// getCurrentPosition (gCP) will call the loadMap fn as a regular fn call
-		// not as a method call, so the regular fn call will have this set to undefined
-
-		// WRONG: // navigator.geolocation.getCurrentPosition(this._loadMap, function () {
-		// CORRECT:
-		// navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), function () {
-		// 	alert('Could not get your location coordinates!');
-		// 	throw new Error('App quit because location could not be found');
-		// });
-
 		const position = { coords: { latitude: 19.2793888, longitude: 72.860704 } };
 		this._loadMap(position);
 	}
@@ -104,12 +87,9 @@ class App {
 
 		L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 			attribution: '&copy; OpenStreetMap',
-		}).addTo(this.#map); // notice this.#map
+		}).addTo(this.#map);
 
 		this.#map.on('click', this._showForm.bind(this));
-
-		// you might need this to avoid bugs, see commit 'Add note for potential bug'
-		// this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
 
 	_showForm(mapEvt) {
@@ -119,7 +99,10 @@ class App {
 	}
 
 	_hideForm() {
-		inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = '';
+		inputDistance.value = '';
+		inputDuration.value = '';
+		inputCadence.value = '';
+		inputElevation.value = '';
 
 		form.classList.add('hidden');
 	}
@@ -146,7 +129,10 @@ class App {
 		if (workoutType === 'running') {
 			const cadence = Number(inputCadence.value);
 
-			if (!isNumber(distance, duration, cadence) || !isPositive(distance, duration, cadence)) {
+			if (
+				!isNumber(distance, duration, cadence) ||
+				!isPositive(distance, duration, cadence)
+			) {
 				return alert('Input data is not valid. Enter positive numerical values.');
 			}
 
@@ -156,18 +142,25 @@ class App {
 		if (workoutType === 'cycling') {
 			const elevationGain = Number(inputElevation.value);
 
-			// elevationGain can be -ve as well
-			if (!isNumber(distance, duration, elevationGain) || !isPositive(distance, duration)) {
+			if (
+				!isNumber(distance, duration, elevationGain) ||
+				!isPositive(distance, duration)
+			) {
 				return alert('Input data is not valid. Enter positive numerical values.');
 			}
 
-			workout = new Cycling([clickLat, clickLng], distance, duration, elevationGain);
+			workout = new Cycling(
+				[clickLat, clickLng],
+				distance,
+				duration,
+				elevationGain
+			);
 		}
 
 		this.#workouts.push(workout);
 
 		this._renderWorkout(workout);
-		this._renderWorkoutMarker(workout); // notice no requirement of call or bind
+		this._renderWorkoutMarker(workout);
 
 		this._hideForm();
 
@@ -183,10 +176,14 @@ class App {
 			className: `${workout.workoutType}-popup`,
 		};
 
-		L.marker(workout.coords) // workout.coords is [lat, lng] as reqd by leaflet
+		L.marker(workout.coords)
 			.addTo(this.#map)
 			.bindPopup(L.popup(popupOptions))
-			.setPopupContent(`${workout.workoutType === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`)
+			.setPopupContent(
+				`${workout.workoutType === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${
+					workout.description
+				}`
+			)
 			.openPopup();
 	}
 
@@ -220,14 +217,13 @@ class App {
 		form.insertAdjacentHTML('afterend', html);
 	}
 
-	// click on a workout in sidebar and move to it's location in the map
-	// use Event delegation
 	_moveToPopup(evt) {
 		const workoutElem = evt.target.closest('.workout');
 		if (!workoutElem) return;
 
-		const workout = this.#workouts.find(workout => workout.id === workoutElem.dataset.id);
-		// console.log(workout);
+		const workout = this.#workouts.find(
+			workout => workout.id === workoutElem.dataset.id
+		);
 
 		this.#map.setView(workout.coords, this.#mapZoomLevel, {
 			animate: true,
@@ -243,22 +239,14 @@ class App {
 		const workouts = JSON.parse(localStorage.getItem('workouts'));
 		if (!workouts) return;
 
-		// workouts from local storage have lost the correct prototype chain
-		// log workouts and check
-		// this might cause problems if you use the chain to call methods up in the chain
-		// (a problem was demonstrated using a click fn, check video)
 		this.#workouts = workouts;
-
 		this.#workouts.forEach(workout => this._renderWorkout(workout));
-
-		// this might cause potential bug, see commit 'Add note for potential bug'
 		this.#workouts.forEach(workout => this._renderWorkoutMarker(workout));
 	}
 
 	reset() {
-		// can be called in script or (better) console
 		localStorage.removeItem('workouts');
-		location.reload(); // reload page
+		location.reload();
 	}
 }
 
