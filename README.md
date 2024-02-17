@@ -1,19 +1,9 @@
-# Jonas Mapty
+# Mapty
 
-## Learning goal
-
--   OOP
--   Geolocation
--   External libraries
-
-## Section
-
--   Section 15, Mapty
-
-## Links
-
--   [Live Demo]()
+-   [Live Demo](https://agg-geek.github.io/mapty/)
 
 ## To-do
 
 ## Issues
+
+-   The markers are rendered in `_getWorkouts()` but aren't rendered in `_loadMap()` when workouts are loaded from local storage.
